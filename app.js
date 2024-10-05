@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const ckdRoutes = require('./routes/ckdRoutes');
 const cors = require('cors'); 
+const allowedOrigins = ['https://ckd-predictor-frontend.onrender.com']; 
 
 dotenv.config();
 
@@ -16,7 +17,11 @@ const app = express();
 app.use(bodyParser.json());
 
 // Enable CORS to allow requests from frontend
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 // Routes
 app.use('/api/ckd', ckdRoutes);
