@@ -3,6 +3,7 @@ import numpy as np
 import json
 import os
 import joblib
+import pandas as pd
 
 # Determine the directory where predictor.py is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -21,10 +22,11 @@ except Exception as e:
     sys.exit(1)
 
 def predict(features):
-    features = np.array(features).reshape(1, -1)
-    features = x_scaler.transform(features)
-    prediction = svc_model.predict(features)
-    proba = svc_model.predict_proba(features).max()
+    feature_names = ["sg", "al", "sc", "hemo", "pcv", "htn"]  # Replace with actual feature names if different
+    features_df = pd.DataFrame([features], columns=feature_names)
+    features_scaled = x_scaler.transform(features_df)
+    prediction = svc_model.predict(features_scaled)
+    proba = svc_model.predict_proba(features_scaled).max()
     return prediction[0], proba
 
 def main():
